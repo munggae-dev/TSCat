@@ -10,6 +10,7 @@ Based on RunCat Neo revision 82d55b6 (full upstream history retained).
 - Added ChargingInfoTests covering power conversion, unavailable estimates, disconnection, signed/wrapped current, full charge, and paused charging.
 - Updated the Xcode project and InfoPlist string catalog to use TSCat and an independent bundle identifier, removing the upstream signing team.
 - Removed the upstream donation tab from SettingsView.
+- Removed the inherited GitHub Actions workflow; public CI is not configured.
 - Replaced the project README with fork-specific build instructions and limitations; added NOTICE and dependency license texts.
 
 The local prototype was called RunCat Charge. Public TSCat builds use a different application identifier and do not automatically inherit that prototype's settings or login registration.
