@@ -1,3 +1,4 @@
+// Modified for TSCat (2026-10-20): battery charging display and independent fork configuration.
 /*
  AppDependencies.swift
  Model
@@ -23,6 +24,7 @@ import SwiftUI
 
 public struct AppDependencies: Sendable {
     public var appStateClient = AppStateClient.liveValue
+    public var chargingInfoClient = ChargingInfoClient.liveValue
     public var dataClient = DataClient.liveValue
     public var dateClient = DateClient.liveValue
     public var fileManagerClient = FileManagerClient.liveValue
@@ -46,6 +48,7 @@ extension EnvironmentValues {
 extension AppDependencies {
     public static func testDependencies(
         appStateClient: AppStateClient = .testValue,
+        chargingInfoClient: ChargingInfoClient = .testValue,
         dataClient: DataClient = .testValue,
         dateClient: DateClient = .testValue,
         fileManagerClient: FileManagerClient = .testValue,
@@ -61,6 +64,7 @@ extension AppDependencies {
     ) -> AppDependencies {
         AppDependencies(
             appStateClient: appStateClient,
+            chargingInfoClient: chargingInfoClient,
             dataClient: dataClient,
             dateClient: dateClient,
             fileManagerClient: fileManagerClient,

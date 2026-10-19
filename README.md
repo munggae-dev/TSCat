@@ -1,82 +1,50 @@
-# RunCat Neo
+# TSCat
 
-**A cute running cat animation on your macOS menubar.**
+A macOS menu bar cat with battery charging power and an estimated time to full charge.
 
-> [!CAUTION]
->
-> - This project is for macOS, so we do not accept inquiries about Windows version.
-> - We do not accept issues or pull requests in languages other than English.
-> - Issues that do not follow the Issue Template will be closed without question.
-> - Requests to add new runners are not accepted here. Please make them in the [Runner Gallery](https://runcat-dev.github.io/RunnerGallery/).
+**TSCat is an independent, unofficial derivative of [RunCat Neo](https://github.com/runcat-dev/RunCatNeo), created by Takuto Nakamura (Kyome22). It is not endorsed by or affiliated with the upstream developers.** The local prototype was named RunCat Charge; the public project uses TSCat.
 
-[![Issues](https://img.shields.io/github/issues/runcat-dev/RunCatNeo)](https://github.com/runcat-dev/RunCatNeo/issues)
-[![Forks](https://img.shields.io/github/forks/runcat-dev/RunCatNeo)](https://github.com/runcat-dev/RunCatNeo/network/members)
-[![Stars](https://img.shields.io/github/stars/runcat-dev/RunCatNeo)](https://github.com/runcat-dev/RunCatNeo/stargazers)
-[![Top language](https://img.shields.io/github/languages/top/runcat-dev/RunCatNeo)](https://github.com/runcat-dev/RunCatNeo/)
-[![Releases](https://img.shields.io/github/v/release/runcat-dev/RunCatNeo)](https://github.com/runcat-dev/RunCatNeo/releases)
-[![License](https://img.shields.io/github/license/runcat-dev/RunCatNeo)](https://github.com/runcat-dev/RunCatNeo/)
+## Features
 
-`Swift` `macOS` `Xcode` `RunCat`
+- Shows battery charging power in watts beside the animated cat while charging.
+- Shows the system-provided estimated time to full charge in the dashboard.
+- Distinguishes charging, charge complete, charging paused, and unavailable estimates.
+- Retains the upstream runner animation, system metrics, and custom metric features.
 
-<img src="./docs/images/en/demo.gif" width="449" height="350" alt="demo" />
+Power is calculated from battery voltage and current. It is **battery-side power**, not the adapter's rated output or total power drawn by the Mac. Estimates depend on macOS and battery firmware, may change, and are not guarantees. Missing estimates show a calculating status. New charging status text is currently Korean.
 
-## Installation
+## Build
 
-RunCat Neo is available for installation on the App Store.
+Install a full Xcode distribution compatible with the project and its dependencies (Swift 6.2 or later). Command Line Tools alone are insufficient. The project targets macOS 26.0 or later; validation was performed on the developer's Mac, not every supported system.
 
-- Requirement: macOS 26 or higher
-- App Store: https://apps.apple.com/us/app/runcat-neo/id6757801838
-- Language:
-  - Chinese (simplified)
-  - Chinese (traditional)
-  - English (primary)
-  - French
-  - German
-  - Japanese
-  - Korean
-  - Russian
-  - Spanish
-  - Vietnamese
+Open `RunCatNeo.xcodeproj` and select the `RunCatNeo` scheme. These internal project names are retained from upstream. The built app is named **TSCat**, with bundle identifier `io.github.munggae-dev.TSCat`. Select your own signing team when needed.
 
-## Requirements
+For an unsigned local build:
 
-- Development with Xcode 26.5+
-- Compatible with macOS 26.3+
-- Written in Swift 6.2
+```sh
+xcodebuild -project RunCatNeo.xcodeproj -scheme RunCatNeo \
+  -configuration Debug -derivedDataPath DerivedData \
+  -skipPackagePluginValidation CODE_SIGNING_ALLOWED=NO build
+```
 
-## Architecture
+Output: `DerivedData/Build/Products/Debug/TSCat.app`.
 
-This project is built using an architecture called [LUCA](https://github.com/Kyome22/LUCA).  
-Please refer to the following article for more details.
+This repository publishes source code. No notarized installer or App Store release is provided. The upstream App Store listing distributes RunCat Neo, not TSCat.
 
-https://dev.to/kyome22/luca-a-modern-architecture-for-swiftui-development-3g2i
+## Validation and limitations
 
-## Custom Metrics
+- The public TSCat configuration built successfully with full Xcode on 2026-10-20.
+- Five charging logic tests passed (including unknown-time parameter cases).
+- Live battery readings were obtained on one Mac.
+- Automated visual verification and physical charger connect/disconnect testing remain incomplete.
+- Battery telemetry uses AppleSmartBattery registry fields and may be unavailable on other hardware or OS versions.
 
-RunCat can watch any local JSON file in the documented format and render it as a card on the dashboard. Use it to display Claude Code usage, GPU temperature, GitHub contributions, remaining reminders, or anything else you can write to a file.
+The test source is `LocalPackage/Tests/DataSourceTests/EntityTests/ChargingInfoTests.swift`.
 
-- [JSON schema](docs/CustomMetricsSchema.md)
-- [Claude Code statusLine sample](docs/samples/claude-code/)
-- [Codex integration sample](docs/samples/codex/)
-- [Bitcoin price sample](docs/samples/bitcoin/)
+## License and attribution
 
-## Custom Runners
+Licensed under [Apache License 2.0](LICENSE). Original copyright and attribution notices are retained. See [NOTICE](NOTICE), [CHANGES.md](CHANGES.md), and [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
-By creating your own keyframe animations, you can have any runner you like dashing across your menu bar. You can also find resources for custom runners showcased and distributed in the [Runner Gallery](https://runcat-dev.github.io/RunnerGallery/).
+Modified source files carry change notices. Original source, bundled runner assets, and upstream history are retained with their notices. Upstream documentation under `docs/` describes the original project and is retained as reference; its download, support, and donation links refer to upstream, not TSCat. TSCat removes the upstream in-app donation tab.
 
-Runners are managed in the Runner Gallery, not in this repository. If you want a new runner added, or want to share one you made, please head to the [Runner Gallery](https://runcat-dev.github.io/RunnerGallery/) instead of opening an Issue here.
-
-## RunCat Developers' Community
-
-This is a space for RunCat contributors to communicate closely regarding development and operations.
-We welcome anyone interested in contributing to RunCat.
-However, please note that this is a place for discussing features, not for submitting requests.
-For requests, please create an Issue according to the template.
-
-Portal: https://runcat-dev.github.io
-
-## Contributors
-
-<a href="https://github.com/runcat-dev/RunCatNeo/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=runcat-dev/RunCatNeo" />
-</a>
+The license does not grant rights to upstream trademarks. References to RunCat Neo identify the origin of this work.

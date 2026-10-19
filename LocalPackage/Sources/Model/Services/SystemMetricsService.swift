@@ -1,3 +1,4 @@
+// Modified for TSCat (2026-10-20): battery charging display and independent fork configuration.
 /*
  SystemMetricsService.swift
  Model
@@ -22,6 +23,7 @@ import DataSource
 import SystemInfoKit
 
 struct SystemMetricsService {
+    private let chargingInfoClient: ChargingInfoClient
     private let appStateClient: AppStateClient
     private let systemInfoObserverClient: SystemInfoObserverClient
     private let userDefaultsRepository: UserDefaultsRepository
@@ -31,6 +33,7 @@ struct SystemMetricsService {
     }
 
     init(_ appDependencies: AppDependencies) {
+        self.chargingInfoClient = appDependencies.chargingInfoClient
         self.appStateClient = appDependencies.appStateClient
         self.systemInfoObserverClient = appDependencies.systemInfoObserverClient
         self.userDefaultsRepository = .init(appDependencies.userDefaultsClient)
@@ -57,7 +60,9 @@ struct SystemMetricsService {
     }
 
     func updateMetrics(from systemInfoBundle: SystemInfoBundle) {
+        let chargingInfo = chargingInfoClient.current()
         appStateClient.send(\.metrics, default: .init()) { metrics in
+            metrics.chargingInfo = chargingInfo
             metrics.systemInfoBundle = systemInfoBundle
             if let value = systemInfoBundle.cpuInfo?.percentage.value {
                 metrics.cpuRingBuffer.append(value)

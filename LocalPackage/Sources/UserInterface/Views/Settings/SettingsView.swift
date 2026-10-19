@@ -1,3 +1,4 @@
+// Modified for TSCat (2026-10-20): battery charging display and independent fork configuration.
 /*
  SettingsView.swift
  UserInterface
@@ -55,15 +56,7 @@ struct SettingsView: View {
                     }
                 }
                 .tag(SettingsTab.metrics)
-            DonationSettingsView(store: .init(appDependencies))
-                .tabItem {
-                    Label {
-                        Text("donationTab", bundle: .module)
-                    } icon: {
-                        Image(systemName: "mug")
-                    }
-                }
-                .tag(SettingsTab.donation)
+
         }
         .fixedSize()
         .accessibilityIdentifier("settings")

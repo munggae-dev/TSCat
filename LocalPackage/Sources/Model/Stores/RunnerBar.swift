@@ -1,3 +1,4 @@
+// Modified for TSCat (2026-10-20): battery charging display and independent fork configuration.
 /*
  RunnerBar.swift
  Model
@@ -32,6 +33,7 @@ public final class RunnerBar: Composable {
     @ObservationIgnored private var tintColor = CGColor.black
     @ObservationIgnored private var task: Task<Void, Never>?
 
+    public var chargingInfo: ChargingInfo?
     public var icon: NSImage?
     public var size: CGSize
     public var isTemplate: Bool
@@ -62,9 +64,16 @@ public final class RunnerBar: Composable {
         case let .viewAppeared(screenName, eventBridge):
             logService.notice(.screenView(name: screenName))
             self.eventBridge = eventBridge
+            chargingInfo = appStateClient.withLock(\.metrics.latestValue)?.chargingInfo
             task?.cancel()
             task = Task.immediate { [weak self, appStateClient] in
                 await withTaskGroup { group in
+                    group.addImmediateTask {
+                        let stream = appStateClient.withLock(\.metrics.stream)
+                        for await value in stream {
+                            self?.chargingInfo = value.chargingInfo
+                        }
+                    }
                     group.addImmediateTask {
                         for await value in StatusBarAppearanceBridge.shared.stream {
                             self?.update(appearance: value)

@@ -1,3 +1,4 @@
+// Modified for TSCat (2026-10-20): battery charging display and independent fork configuration.
 /*
  DashboardView.swift
  UserInterface
@@ -39,6 +40,9 @@ struct DashboardView: View {
                 memoryRingBuffer: store.memoryRingBuffer,
                 isPreview: store.isPreview
             )
+            if let chargingInfo = store.chargingInfo, chargingInfo.isConnected {
+                ChargingInfoView(info: chargingInfo)
+            }
             ForEach(store.customMetricsBundles) { customMetricsBundle in
                 CustomMetricsCardView(
                     customMetricsBundle: customMetricsBundle,

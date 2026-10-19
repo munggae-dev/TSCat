@@ -1,0 +1,14 @@
+TSCat
+An independent, unofficial derivative of RunCat Neo.
+
+Original project: https://github.com/runcat-dev/RunCatNeo
+Copyright 2026 Kyome22 (Takuto Nakamura)
+Licensed under the Apache License, Version 2.0.
+
+TSCat modifications: Copyright 2026 TSCat contributors.
+Adds battery-side charging power, estimated time to full charge, and related tests;
+uses an independent public name and bundle identifier; removes the donation tab.
+No affiliation with or endorsement by the original author is implied.
+
+This NOTICE was added by TSCat. The imported upstream revision did not contain
+an upstream NOTICE file. Existing source copyright notices are preserved.

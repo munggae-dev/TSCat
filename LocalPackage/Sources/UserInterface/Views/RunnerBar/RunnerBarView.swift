@@ -1,3 +1,4 @@
+// Modified for TSCat (2026-10-20): battery charging display and independent fork configuration.
 /*
  RunnerBarView.swift
  UserInterface
@@ -37,10 +38,27 @@ struct RunnerBarView: View {
 #if arch(arm64)
         let icon = store.icon
 #endif
-        let nsImage = NSImage(size: store.size, flipped: true) { rect in
+        let power = store.chargingInfo.flatMap { info in
+            info.isCharging ? info.watts.map { String(format: "%.1f W", $0) } : nil
+        }
+        let attributes: [NSAttributedString.Key: Any] = [
+            .font: NSFont.monospacedDigitSystemFont(ofSize: 11, weight: .medium),
+            .foregroundColor: NSColor.labelColor,
+        ]
+        let textSize = power.map { ($0 as NSString).size(withAttributes: attributes) } ?? .zero
+        let runnerSize = store.size
+        let size = CGSize(width: runnerSize.width + (power == nil ? 0 : textSize.width + 6),
+                          height: runnerSize.height)
+        let nsImage = NSImage(size: size, flipped: true) { rect in
 #if arch(arm64)
-            icon?.draw(in: rect)
+            icon?.draw(in: CGRect(origin: .zero, size: runnerSize))
 #endif
+            if let power {
+                (power as NSString).draw(
+                    at: CGPoint(x: runnerSize.width + 6, y: (rect.height - textSize.height) / 2),
+                    withAttributes: attributes
+                )
+            }
             return true
         }
         nsImage.isTemplate = store.isTemplate

@@ -1,3 +1,4 @@
+// Modified for TSCat (2026-10-20): battery charging display and independent fork configuration.
 /*
  Metrics.swift
  DataSource
@@ -21,17 +22,20 @@
 import SystemInfoKit
 
 public struct Metrics: Sendable {
+    public var chargingInfo: ChargingInfo?
     public var systemInfoBundle: SystemInfoBundle
     public var cpuRingBuffer: RingBuffer
     public var memoryRingBuffer: RingBuffer
     public var customMetricsBundles: [CustomMetricsBundle]
 
     public init(
+        chargingInfo: ChargingInfo? = nil,
         systemInfoBundle: SystemInfoBundle = .cpuZero(),
         cpuRingBuffer: RingBuffer = .init(),
         memoryRingBuffer: RingBuffer = .init(),
         customMetricsBundles: [CustomMetricsBundle] = []
     ) {
+        self.chargingInfo = chargingInfo
         self.systemInfoBundle = systemInfoBundle
         self.cpuRingBuffer = cpuRingBuffer
         self.memoryRingBuffer = memoryRingBuffer

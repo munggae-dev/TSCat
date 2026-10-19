@@ -1,3 +1,4 @@
+// Modified for TSCat (2026-10-20): battery charging display and independent fork configuration.
 /*
  Dashboard.swift
  Model
@@ -31,6 +32,7 @@ public final class Dashboard: Composable {
 
     @ObservationIgnored private var task: Task<Void, Never>?
 
+    public var chargingInfo: ChargingInfo?
     public var appName: String
     public var systemInfoBundle: SystemInfoBundle
     public var cpuRingBuffer: RingBuffer
@@ -96,6 +98,7 @@ public final class Dashboard: Composable {
     }
 
     private func updateMetrics(_ metrics: Metrics) {
+        chargingInfo = metrics.chargingInfo
         systemInfoBundle = metrics.systemInfoBundle
         cpuRingBuffer = metrics.cpuRingBuffer
         memoryRingBuffer = metrics.memoryRingBuffer
